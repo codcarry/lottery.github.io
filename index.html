@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            min-height:400px ;
+            max-height: 100vh;
+            background-color: #ffe5e56a;
+            padding: 2vw;
+        }
+        .double-color-box {
+            display: flex;
+            box-sizing: border-box;
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 2vw;
+        }
+        .red {
+            height: 8vw;
+            margin-right: 12px;
+            flex: 6;
+            display: flex;
+            /* border-right: 1px solid green; */
+            /* border-bottom: 1px solid green; */
+        }
+        .red [class^="red-"] {
+            /* border-left: 1px solid green; */
+            /* border-top: 1px solid green; */
+            height: 100%;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .red .ball{
+            width: 40%;
+            aspect-ratio:1;
+            border-radius: 50%;
+            background-color: #fa4e4e;
+            font-size: 4vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: 700;
+        }
+        .blue {
+            height: 8vw;
+            /* border: 1px solid green; */
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: 700;
+        }
+        .blue .ball {
+            width: 40%;
+            aspect-ratio:1;
+            border-radius: 50%;
+            background-color: #4788f4;
+            font-size: 4vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .options-btns {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+        }
+        .options-btns div {
+
+        }
+        /* .hide-ball .ball {
+            display: none;
+        } */
+        .do-lottery-btn {
+            width: 24vw;
+            padding: 2vw;
+            height: 5vw;
+            background-color: #409eff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: .3vw;
+            cursor: pointer;
+            color: #fff;
+            font-size: 4vw;
+        }
+        .do-lottery-stop{
+            background-color: #f56c6c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="double-color-box">
+            <div class="red hide-ball">
+                <div class="red-1"><span class="ball">8</span></div>
+                <div class="red-2"><span class="ball">8</span></div>
+                <div class="red-3"><span class="ball">8</span></div>
+                <div class="red-4"><span class="ball">8</span></div>
+                <div class="red-5"><span class="ball">8</span></div>
+                <div class="red-6"><span class="ball">8</span></div>
+            </div>
+            <div class="blue hide-ball"><span class="ball">8</span></div>
+        </div>
+        <div class="options-btns">
+            <div class="do-lottery-btn do-lottery-sudden">点击瞬间摇号</div>
+            <div class="do-lottery-btn do-lottery-duration">点击持续摇号</div>
+            <div class="do-lottery-btn do-lottery-stop">停止摇号</div>
+        </div>
+    </div>
+    <script>
+        const redDomList = document.querySelectorAll('div[class^="red-"]')
+        const redBallBox = document.querySelector('.red') 
+        const blueBallBox = document.querySelector('.blue')
+        const duration = 20000 // 两秒的抽奖时间，抽奖一开始相应位置dom的数字就要一直不停的变动
+        let redList = Array(32).fill(1).map((item, i) => i + 1)
+        let blueList = Array(16).fill(1).map((item, i) => i + 1)
+        let isLotterying = false
+        const doLottery = () => {
+            if(isLotterying) return
+            isLotterying = true
+            redBallBox.classList.remove('hide-ball')
+            blueBallBox.classList.remove('hide-ball')
+            const taskQueue = []
+            const funcs = []
+            redDomList.forEach((item, index) => {
+                funcs.push(() => {
+                    const promiseItem = new Promise((resolve) => {
+                        // [0,32)  能取得就是0-31
+                        const rdm = Math.floor(Math.random() * redList.length)
+                        item.childNodes[0].innerText = redList[rdm]
+                        redList.splice(rdm, 1)
+                        window.requestAnimationFrame(resolve)
+                    })
+                    taskQueue.push(promiseItem)
+                    return promiseItem
+                })
+            })
+            funcs.push(() => {
+                return new Promise((resolve) => {
+                    const rdm = Math.floor(Math.random() * blueList.length)
+                    blueBallBox.childNodes[0].innerText = blueList[rdm]
+                    window.requestAnimationFrame(resolve)
+                })
+            })
+            funcs.forEach(async item => {
+                await item()
+            })
+            Promise.allSettled(taskQueue).then(() => {
+                isLotterying = false
+                redList = Array(32).fill(1).map((item, i) => i + 1)
+            })
+        }
+        let startTime = 0
+        let lotteryTimer = null
+        const doLotteryWithDuration = (duration) => {
+            !startTime && (startTime = Date.now())
+                lotteryTimer = setInterval(() => {
+                if(Date.now() - startTime < duration){
+                    doLottery()
+                }else{
+                    startTime = 0
+                    window.clearInterval(lotteryTimer)
+                }
+            }, 60);
+        }
+        document.querySelector('.do-lottery-sudden').addEventListener('click', doLottery)
+        document.querySelector('.do-lottery-duration').addEventListener('click', () => {
+            doLotteryWithDuration(duration)
+        })
+        document.querySelector('.do-lottery-stop').addEventListener('click', () => {
+            startTime = 0
+            lotteryTimer && window.clearInterval(lotteryTimer)
+        })
+    </script>
+</body>
+
+</html>
