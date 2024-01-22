@@ -134,7 +134,11 @@
             word-wrap: break-word;
         }
 
-        /* 屏幕大于等于600px */
+        @media screen and (max-width:1600px) {
+            .caishen-box {
+                display: none;
+            }
+        }
         @media screen and (max-width: 600px) {
             .caishen-box {
                 display: none;
@@ -143,8 +147,6 @@
                 margin: 10px 10px 0;
             }
         }
-
-        /* 屏幕大于等于800px */
         @media screen and (min-width: 1600px) {
             .top-facai {
                 display: none;
