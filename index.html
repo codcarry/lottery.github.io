@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="./assets/images/favicon.ico">
     <title>恭喜发财</title>
     <style>
         * {
@@ -16,15 +17,38 @@
             animation: container-bling 2s infinite alternate;
             border-radius: .5%;
             overflow: hidden;
+            background:linear-gradient(rgba(255, 217, 0, 0.355),gold);
+        }
+
+        .top-animation-god-bless {
+            position: relative;
+            background-color: #f00000;
+            background-image: url(./assets//images/元宝.gif);
+            background-size: contain;
+            background-position: top center;
+        }
+
+        .top-animation-god-bless img {
+            width: 100%;
+        }
+
+        .top-animation-god-bless::after {
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 3vw;
+            background-color: #f00000;
+            bottom: 1vw;
+            right: 0;
         }
 
         @keyframes container-bling {
             from {
-                box-shadow: 0 0 2vw rgb(198, 195, 15);
+                box-shadow: 0 0 40vw rgb(235, 221, 143);
             }
 
             to {
-                box-shadow: 0 0 8vw rgb(255, 196, 0);
+                box-shadow: 0 0 20vw gold;
             }
         }
 
@@ -39,8 +63,18 @@
         .lottery-item-box {
             padding: 12px;
             background-color: #f00000;
+            border-radius: .9vw;
+            margin: 10px;
+            box-shadow: inset 0 0 12px 0px rgb(255, 255, 255);
         }
 
+        .lottery-item-box.pailie-box {
+            box-sizing: border-box;
+        }
+
+        .lottery-item-box:not(.lottery-item-box:nth-child(4)) {
+            padding-top: 2vw;
+        }
         .lottery-item-box:last-child {
             border-right: none;
         }
@@ -55,11 +89,11 @@
 
         @keyframes ball-bling {
             from {
-                box-shadow: 0 0 2vw goldenrod;
+                box-shadow: 0 0 1vw goldenrod;
             }
 
             to {
-                box-shadow: 0 0 8vw gold;
+                box-shadow: 0 0 4vw gold;
             }
         }
 
@@ -76,6 +110,7 @@
             font-weight: 700;
             margin-right: 8px;
             animation: ball-bling 2s infinite alternate;
+            background-color: #ff0000;
         }
 
         .blue {
@@ -105,18 +140,46 @@
         }
 
         /* 屏幕大于等于600px */
-        @media screen and (min-width: 600px) {}
+        @media screen and (max-width: 600px) {
+            .caishen-box {
+                display: none;
+            }
+            .top-facai {
+                margin: 10px 10px 0;
+            }
+        }
 
         /* 屏幕大于等于800px */
         @media screen and (min-width: 1600px) {
+            .top-facai {
+                display: none;
+            }
+
+            .caishen-box {
+                padding: 0 20px;
+                display: grid;
+                column-gap: 20px;
+                grid-template-columns: 1fr 1fr 1fr;
+                justify-content: space-around;
+                background-color: #f00000;
+                margin: 0 10px;
+                border-radius: .9vw;
+            }
+
+            .bottom-facai {
+                flex: 1;
+            }
+
+            .bottom-facai::after {
+                bottom: 0vw;
+            }
+
             .lottery-content {
                 display: flex;
-                margin: 0 0 16px 16px;
             }
 
             .lottery-item-box {
                 flex: 1;
-                margin: 16px 16px 0 0;
             }
 
             .ball {
@@ -154,8 +217,8 @@
 
 <body>
     <div class="container">
-        <div class="top-animation-god-bless">
-
+        <div class="top-animation-god-bless top-facai">
+            <img src="./assets//images/财神爷.png" alt="">
         </div>
         <div class="lottery-content">
             <div class="lottery-item-box double-color-box">
@@ -173,6 +236,41 @@
                     <div class="do-lottery-btn do-lottery-sudden-double">瞬间摇号</div>
                     <div class="do-lottery-btn do-lottery-duration-double">持续摇号</div>
                     <div class="do-lottery-btn do-lottery-stop do-lottery-stop-double">停止摇号</div>
+                </div>
+            </div>
+            <div class="lottery-item-box big-lottery-box">
+                <div class="title">大乐透</div>
+                <div class="double-color-balls">
+                    <div class="ball front">8</div>
+                    <div class="ball front">8</div>
+                    <div class="ball front">8</div>
+                    <div class="ball front">8</div>
+                    <div class="ball front">8</div>
+                    <div class="ball front">8</div>
+                    <div class="ball back">8</div>
+                    <div class="ball back">8</div>
+                </div>
+                <div class="options-btns">
+                    <div class="do-lottery-btn do-lottery-sudden-big-lottery">瞬间摇号</div>
+                    <div class="do-lottery-btn do-lottery-duration-big-lottery">持续摇号</div>
+                    <div class="do-lottery-btn do-lottery-stop do-lottery-stop-big-lottery">停止摇号</div>
+                </div>
+            </div>
+            <div class="lottery-item-box seven-stars-box">
+                <div class="title">七星彩</div>
+                <div class="double-color-balls">
+                    <div class="ball seven-front">8</div>
+                    <div class="ball seven-front">8</div>
+                    <div class="ball seven-front">8</div>
+                    <div class="ball seven-front">8</div>
+                    <div class="ball seven-front">8</div>
+                    <div class="ball seven-front">8</div>
+                    <div class="ball seven-back">8</div>
+                </div>
+                <div class="options-btns">
+                    <div class="do-lottery-btn do-lottery-sudden-seven-star">瞬间摇号</div>
+                    <div class="do-lottery-btn do-lottery-duration-seven-star">持续摇号</div>
+                    <div class="do-lottery-btn do-lottery-stop do-lottery-stop-seven-star">停止摇号</div>
                 </div>
             </div>
             <div class="lottery-item-box pailie-box">
@@ -198,40 +296,16 @@
                     <div class="do-lottery-btn do-lottery-stop do-lottery-stop-pailie">停止摇号</div>
                 </div>
             </div>
-            <div class="lottery-item-box double-color-box">
-                <div class="title">大乐透</div>
-                <div class="double-color-balls">
-                    <div class="ball front">8</div>
-                    <div class="ball front">8</div>
-                    <div class="ball front">8</div>
-                    <div class="ball front">8</div>
-                    <div class="ball front">8</div>
-                    <div class="ball front">8</div>
-                    <div class="ball back">8</div>
-                    <div class="ball back">8</div>
-                </div>
-                <div class="options-btns">
-                    <div class="do-lottery-btn do-lottery-sudden-big-lottery">瞬间摇号</div>
-                    <div class="do-lottery-btn do-lottery-duration-big-lottery">持续摇号</div>
-                    <div class="do-lottery-btn do-lottery-stop do-lottery-stop-big-lottery">停止摇号</div>
-                </div>
+        </div>
+        <div class="caishen-box">
+            <div class="top-animation-god-bless bottom-facai">
+                <img src="./assets//images/财神爷.png" alt="">
             </div>
-            <div class="lottery-item-box double-color-box">
-                <div class="title">七星彩</div>
-                <div class="double-color-balls">
-                    <div class="ball seven-front">8</div>
-                    <div class="ball seven-front">8</div>
-                    <div class="ball seven-front">8</div>
-                    <div class="ball seven-front">8</div>
-                    <div class="ball seven-front">8</div>
-                    <div class="ball seven-front">8</div>
-                    <div class="ball seven-back">8</div>
-                </div>
-                <div class="options-btns">
-                    <div class="do-lottery-btn do-lottery-sudden-seven-star">瞬间摇号</div>
-                    <div class="do-lottery-btn do-lottery-duration-seven-star">持续摇号</div>
-                    <div class="do-lottery-btn do-lottery-stop do-lottery-stop-seven-star">停止摇号</div>
-                </div>
+            <div class="top-animation-god-bless bottom-facai">
+                <img src="./assets//images/财神爷.png" alt="">
+            </div>
+            <div class="top-animation-god-bless bottom-facai">
+                <img src="./assets//images/财神爷.png" alt="">
             </div>
         </div>
     </div>
